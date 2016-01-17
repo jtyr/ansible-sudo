@@ -13,15 +13,10 @@ Example
 # Example of how to use the role
 - hosts: myhost
   vars:
-    sudo_users:
-      # root can run any password
-      - root:
-          host: ALL
-          runas: ALL
-          tag: ''
-          cmd: ALL
-      # wheel group can run any command without password
-      - '%wheel':
+    sudo_users__custom:
+      # Add a new definition for the ansible user to be able to run any command
+      # without password
+      - ansible:
           host: ALL
           runas: ALL
           tag: NOPASSWD
@@ -37,9 +32,11 @@ Role variables
 List of variables used by the role:
 
 ```
+# Default path to the visudo
+sudo_visudo: /usr/sbin/visudo
+
 # Default host aliases
 sudo_host_alias: {}
-# Example of host aliases
 #sudo_host_alias:
 #  FILESERVERS:
 #    - fs1
@@ -50,7 +47,6 @@ sudo_host_alias: {}
 
 # Default user aliases
 sudo_user_alias: {}
-# Example of user aliases
 #sudo_user_alias:
 #  ADMINS:
 #    - jsmith
@@ -61,7 +57,6 @@ sudo_user_alias: {}
 
 # Default command aliases
 sudo_cmd_alias: {}
-# Example of command aliases
 #sudo_cmd_alias:
 #  SOFTWARE
 #    - /bin/rpm
@@ -72,7 +67,7 @@ sudo_cmd_alias: {}
 #    - /sbin/chkconfig
 
 # Default sudo defaults
-sudo_defaults:
+sudo_defaults__default:
   - requiretty
   - '!visiblepw'
   - always_set_home
@@ -84,14 +79,22 @@ sudo_defaults:
   - env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
   - secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
+# Custom sudo defaults
+sudo_defaults__custom: []
+
+# Final sudo defaults
+sudo_defaults: "{{
+  sudo_defaults__default +
+  sudo_defaults__custom
+}}"
+
 # Default sudo users
-sudo_users:
+sudo_users__default:
   - root:
       host: ALL
       runas: ALL
       tag: ''
       cmd: ALL
-# Example of additional users, groups and aliases
 #  - '%wheel':
 #      host: ALL
 #      runas: ALL
@@ -108,9 +111,17 @@ sudo_users:
 #      tag: ''
 #      cmd: SOFTWARE, SERVICES
 
+# Custom sudo users
+sudo_users__custom: []
+
+# Final sudo users
+sudo_users: "{{
+    sudo_users__default +
+    sudo_users__custom
+}}"
+
 # Default file includes
 sudo_include: []
-# Example of file includes
 #sudo_include:
 #  - /etc/sudoers2
 

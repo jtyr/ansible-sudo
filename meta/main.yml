@@ -4,7 +4,7 @@ galaxy_info:
   author: Jiri Tyr
   description: Role that manages /etc/sudoers through a set of variables
   license: MIT
-  min_ansible_version: 1.7
+  min_ansible_version: 2.0
   platforms:
     - name: EL
       versions:

@@ -35,7 +35,7 @@ sudo_cmd_alias: {}
 #    - /sbin/chkconfig
 
 # Default sudo defaults
-sudo_defaults:
+sudo_defaults__default:
   - requiretty
   - '!visiblepw'
   - always_set_home
@@ -47,8 +47,17 @@ sudo_defaults:
   - env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"
   - secure_path = /sbin:/bin:/usr/sbin:/usr/bin
 
+# Custom sudo defaults
+sudo_defaults__custom: []
+
+# Final sudo defaults
+sudo_defaults: "{{
+  sudo_defaults__default +
+  sudo_defaults__custom
+}}"
+
 # Default sudo users
-sudo_users:
+sudo_users__default:
   - root:
       host: ALL
       runas: ALL
@@ -69,6 +78,15 @@ sudo_users:
 #      runas: ''
 #      tag: ''
 #      cmd: SOFTWARE, SERVICES
+
+# Custom sudo users
+sudo_users__custom: []
+
+# Final sudo users
+sudo_users: "{{
+    sudo_users__default +
+    sudo_users__custom
+}}"
 
 # Default file includes
 sudo_include: []
