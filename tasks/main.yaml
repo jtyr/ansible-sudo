@@ -6,7 +6,12 @@
       ansible_os_family == "RedHat" or
       ansible_os_family == "Debian"
 
-- include: package.yaml
+- name: Install sudo package
+  package:
+    name: sudo
+    state: present
+  tags:
+    - sudo_pkg
 
 - name: Create /etc/sudoers file
   template:
