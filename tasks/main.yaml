@@ -16,10 +16,45 @@
 - name: Create /etc/sudoers file
   template:
     src: sudoers.j2
-    dest: /etc/sudoers
+    dest: "{{ sudo_sudoers_file }}"
     owner: root
     group: root
     mode: 0440
     validate: "{{ sudo_visudo }} -cf %s"
+  when: sudo_sudoers_deploy
   tags:
     - sudo_config
+    - sudo_config_sudoers
+
+- name: Create /etc/sudoers.d files
+  template:
+    src: sudoers.d.j2
+    dest: "{{ sudo_sudoersd_dir }}/{{ item.key }}"
+    owner: root
+    group: root
+    mode: 0440
+    validate: "{{ sudo_visudo }} -cf %s"
+  with_dict: sudo_sudoersd
+  when: sudo_sudoersd_deploy
+  tags:
+    - sudo_config
+    - sudo_config_sudoersd
+
+- name: Get list of sudoers.d files
+  shell: ls -1 {{ sudo_sudoersd_dir }}/* 2>/dev/null | sed -r 's,{{ sudo_sudoersd_dir }}/(.+),\1,g'
+  register: sudo_sudoersd_present
+  changed_when: False
+  when: sudo_sudoersd_deploy and sudo_sudoersd_managed
+  tags:
+    - sudo_config
+    - sudo_config_sudoersd
+
+- name: Erase unmanaged sudoers.d files
+  file:
+    path: "{{ sudo_sudoersd_dir }}/{{ item }}"
+    state: "{{ 'absent' if item not in sudo_sudoersd else 'file' }}"
+  with_items: sudo_sudoersd_present.stdout_lines
+  when: sudo_sudoersd_managed
+  tags:
+    - sudo_config
+    - sudo_config_sudoersd

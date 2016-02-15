@@ -1,7 +1,8 @@
 sudo
 ====
 
-Role that manages `/etc/sudoers` through a set of variables.
+Role that helps to manage `/etc/sudoers` and `/etc/sudoers.d` through a set of
+variables.
 
 
 Example
@@ -10,7 +11,7 @@ Example
 ```
 ---
 
-# Example of how to use the role
+# Example of how to add ansible user into to /etc/sudoers.conf file
 - hosts: myhost
   vars:
     sudo_users__custom:
@@ -23,6 +24,22 @@ Example
           cmd: ALL
   roles:
     - sudo
+
+# Example of how to create sudoers.d file
+- hosts: myhost
+  vars:
+    sudo_sudoersd:
+      # This is the filename
+      - my_file:
+          # This is the users definition like above
+          users:
+            - ansible:
+                host: ALL
+                runas: ALL
+                tag: NOPASSWD
+                cmd: ALL
+  roles:
+    - sudo
 ```
 
 
@@ -32,6 +49,24 @@ Role variables
 List of variables used by the role:
 
 ```
+# Location of the main sudoers config file
+sudo_sudoers_file: /etc/sudoers
+
+# Location of the sudoers.d directory
+sudo_sudoersd_dir: /etc/sudoers.d
+
+# Whether to delete all unmanaged files
+# (files not defined in the sudo_sudoersd variable)
+sudo_sudoersd_managed: yes
+
+# Deploy main /etc/sudoers.conf file
+# (set to 'no' if only sudoers.d files should be created)
+sudo_sudoers_deploy: yes
+
+# Deploy main /etc/sudoers.conf file
+# (set to 'no' if only the main sudoers file should be created)
+sudo_sudoersd_deploy: yes
+
 # Default path to the visudo
 sudo_visudo: /usr/sbin/visudo
 
@@ -128,6 +163,17 @@ sudo_include: []
 # Default directory includes
 sudo_includedir:
   - /etc/sudoers.d
+
+# Definition of files in /etc/sudoers.d
+sudo_sudoersd: {}
+#sudo_sudoersd:
+#  my_file:
+#    users:
+#      - my_user:
+#          host: ALL
+#          runas: ALL
+#          tag: NOPASSWD
+#          cmd: /sbin/shutdown
 ```
 
 

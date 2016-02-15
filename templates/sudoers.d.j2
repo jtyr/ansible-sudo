@@ -1,0 +1,37 @@
+{{ ansible_managed | comment }}
+{% if 'host_alias' in item.value -%}
+  {{ "\n" }}# Host aliases{{ "\n" }}
+  {%- for alias, values in item.value.host_alias.iteritems() -%}
+    Host_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
+  {%- endfor %}
+{% endif %}
+
+{%- if 'user_alias' in item.value -%}
+  {{ "\n" }}# User aliases{{ "\n" }}
+  {%- for alias, values in item.value.user_alias.iteritems() -%}
+    User_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
+  {%- endfor %}
+{% endif %}
+
+{%- if 'cmd_alias' in item.value -%}
+  {{ "\n" }}# Command aliases{{ "\n" }}
+  {%- for alias, values in item.value.cmd_alias.iteritems() -%}
+    Cmnd_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
+  {%- endfor %}
+{% endif %}
+
+{%- if 'users' in item.value -%}
+  {{ "\n" }}# Users and groups{{ "\n" }}
+  {%- for item in item.value.users %}
+    {%- for user, options in item.iteritems() -%}
+      {{ user }} {{ options.host }} ={{ ' ' }}
+      {%- if options.runas -%}
+        ({{ options.runas }}){{ ' ' }}
+      {%- endif -%}
+      {%- if options.tag -%}
+        {{ options.tag }}:{{ ' ' }}
+      {%- endif -%}
+      {{ options.cmd }}{{ "\n" }}
+    {%- endfor %}
+  {%- endfor %}
+{% endif %}
