@@ -34,7 +34,7 @@
     group: root
     mode: 0440
     validate: "{{ sudo_visudo }} -cf %s"
-  with_dict: sudo_sudoersd
+  with_dict: "{{ sudo_sudoersd }}"
   when: sudo_sudoersd_deploy
   tags:
     - sudo_config
@@ -53,7 +53,7 @@
   file:
     path: "{{ sudo_sudoersd_dir }}/{{ item }}"
     state: "{{ 'absent' if item not in sudo_sudoersd else 'file' }}"
-  with_items: sudo_sudoersd_present.stdout_lines
+  with_items: "{{ sudo_sudoersd_present.stdout_lines }}"
   when: sudo_sudoersd_managed
   tags:
     - sudo_config

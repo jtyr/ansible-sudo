@@ -128,7 +128,6 @@ sudo_users__default:
   - root:
       host: ALL
       runas: ALL
-      tag: ''
       cmd: ALL
 #  - '%wheel':
 #      host: ALL
@@ -137,13 +136,9 @@ sudo_users__default:
 #      cmd: ALL
 #  - ADMINS:
 #      host: ALL
-#      runas: ''
-#      tag: ''
 #      cmd: ALL
 #  - WEBMASTERS:
 #      host: ALL
-#      runas: ''
-#      tag: ''
 #      cmd: SOFTWARE, SERVICES
 
 # Custom sudo users

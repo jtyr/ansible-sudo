@@ -31,14 +31,14 @@
   {{ "\n" }}# Users and groups{{ "\n" }}
   {%- for item in sudo_users %}
     {%- for user, options in item.iteritems() -%}
-      {{ user }} {{ options.host }} ={{ ' ' }}
-      {%- if options.runas -%}
-        ({{ options.runas }}){{ ' ' }}
+      {{ user }} {{ options['host'] }} ={{ ' ' }}
+      {%- if 'runas' in options and options['runas'] | length > 0 -%}
+        ({{ options['runas'] }}){{ ' ' }}
       {%- endif -%}
-      {%- if options.tag -%}
-        {{ options.tag }}:{{ ' ' }}
+      {%- if 'tag' in options and options['tag'] | length > 0 -%}
+        {{ options['tag'] }}:{{ ' ' }}
       {%- endif -%}
-      {{ options.cmd }}{{ "\n" }}
+      {{ options['cmd'] }}{{ "\n" }}
     {%- endfor %}
   {%- endfor %}
 {% endif %}
