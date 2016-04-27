@@ -169,6 +169,9 @@ sudo_sudoersd: {}
 #          runas: ALL
 #          tag: NOPASSWD
 #          cmd: /sbin/shutdown
+
+# List of sudo files to be ignored from management
+sudo_sudoersd_ignore: []
 ```
 
 

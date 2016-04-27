@@ -53,8 +53,10 @@
   file:
     path: "{{ sudo_sudoersd_dir }}/{{ item }}"
     state: "{{ 'absent' if item not in sudo_sudoersd else 'file' }}"
-  with_items: "{{ sudo_sudoersd_present.stdout_lines }}"
-  when: sudo_sudoersd_managed
+  when: >
+    sudo_sudoersd_managed and
+    item not in sudo_sudoersd_ignore
+  with_items: "{{ sudo_sudoersd_present.stdout_lines | default([]) }}"
   tags:
     - sudo_config
     - sudo_config_sudoersd
