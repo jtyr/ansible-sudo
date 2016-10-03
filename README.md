@@ -30,14 +30,14 @@ Example
   vars:
     sudo_sudoersd:
       # This is the filename
-      - my_file:
-          # This is the users definition like above
-          users:
-            - ansible:
-                host: ALL
-                runas: ALL
-                tag: NOPASSWD
-                cmd: ALL
+      my_file:
+        # This is the users definition like above
+        users:
+          - ansible:
+              host: ALL
+              runas: ALL
+              tag: NOPASSWD
+              cmd: ALL
   roles:
     - sudo
 ```

@@ -15,7 +15,7 @@
 
 {%- if 'cmd_alias' in item.value -%}
   {{ "\n" }}# Command aliases{{ "\n" }}
-  {%- for alias, values in item.value['cmd_alias']iteritems() -%}
+  {%- for alias, values in item.value['cmd_alias'].iteritems() -%}
     Cmnd_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
   {%- endfor %}
 {% endif %}

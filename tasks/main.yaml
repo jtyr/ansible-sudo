@@ -1,11 +1,5 @@
 ---
 
-- name: Test distribution
-  assert:
-    that: >
-      ansible_os_family == "RedHat" or
-      ansible_os_family == "Debian"
-
 - name: Install sudo package
   package:
     name: sudo
