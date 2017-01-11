@@ -3,7 +3,6 @@
 - name: Install sudo package
   package:
     name: sudo
-    state: present
   tags:
     - sudo_pkg
 
