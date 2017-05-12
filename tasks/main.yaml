@@ -14,7 +14,7 @@
     group: root
     mode: 0440
     validate: "{{ sudo_visudo }} -cf %s"
-  when: sudo_sudoers_deploy
+  when: sudo_sudoers_deploy == true
   tags:
     - sudo_config
     - sudo_config_sudoers
@@ -28,7 +28,7 @@
     mode: 0440
     validate: "{{ sudo_visudo }} -cf %s"
   with_dict: "{{ sudo_sudoersd }}"
-  when: sudo_sudoersd_deploy
+  when: sudo_sudoersd_deploy == true
   tags:
     - sudo_config
     - sudo_config_sudoersd
