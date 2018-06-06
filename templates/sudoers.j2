@@ -1,21 +1,21 @@
 {{ ansible_managed | comment }}
 {% if sudo_host_alias -%}
   {{ "\n" }}# Host aliases{{ "\n" }}
-  {%- for alias, values in sudo_host_alias.iteritems() -%}
+  {%- for alias, values in sudo_host_alias.tems() -%}
     Host_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
   {%- endfor %}
 {% endif %}
 
 {%- if sudo_user_alias -%}
   {{ "\n" }}# User aliases{{ "\n" }}
-  {%- for alias, values in sudo_user_alias.iteritems() -%}
+  {%- for alias, values in sudo_user_alias.items() -%}
     User_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
   {%- endfor %}
 {% endif %}
 
 {%- if sudo_cmd_alias -%}
   {{ "\n" }}# Command aliases{{ "\n" }}
-  {%- for alias, values in sudo_cmd_alias.iteritems() -%}
+  {%- for alias, values in sudo_cmd_alias.items() -%}
     Cmnd_Alias {{ alias }} = {{ values | join(', ') }}{{ "\n" }}
   {%- endfor %}
 {% endif %}
@@ -30,7 +30,7 @@
 {%- if sudo_users -%}
   {{ "\n" }}# Users and groups{{ "\n" }}
   {%- for item in sudo_users %}
-    {%- for user, options in item.iteritems() -%}
+    {%- for user, options in item.items() -%}
       {{ user }} {{ options['host'] }} ={{ ' ' }}
       {%- if 'runas' in options and options['runas'] | length > 0 -%}
         ({{ options['runas'] }}){{ ' ' }}
