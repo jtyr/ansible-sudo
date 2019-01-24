@@ -8,7 +8,7 @@ variables.
 Example
 -------
 
-```
+```yaml
 ---
 
 # Example of how to add ansible user into to /etc/sudoers.conf file
@@ -48,7 +48,7 @@ Role variables
 
 List of variables used by the role:
 
-```
+```yaml
 # Location of the main sudoers config file
 sudo_sudoers_file: /etc/sudoers
 
